@@ -1,9 +1,12 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Route;
+use App\Models\Book;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
+use App\Http\Controllers\TestController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TeacherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +20,25 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
+    //宣告變數
+    // $a = 8;
+    // $b = [1,2,3];
+    // $c = '您好';
+    // $d = (object)['id' => 1];
+
+    // get會把全部拿出來
+    // $books =Book::get();
+
+    // 終止並印出
+    // dd($books);
+
+    // 回傳指定的vue頁面
+    // return Inertia::render('Test',[
+    //     'books' => $books,
+    //     'count' => 5,
+    //     'title' => '黃昏書店',
+    // ]);
+
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -24,6 +46,49 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+// 將邏輯放到Conteoller
+// 課程管理
+Route::get('/Test',[TestController::class , 'index'])->middleware(['auth', 'verified']);
+
+// 新增課程
+Route::get('/Addclass',[TestController::class , 'addclass']);
+
+// 編輯課程
+Route::get('/Editcourse',[TestController::class , 'editcourse']);
+
+
+
+// 學期排課
+Route::get('/Semester',[TestController::class ,'semester']);
+
+// 學期排課-新增課表
+Route::get('/Semesteraddclass',[TestController::class ,'semesteraddclass']);
+
+// 學期排課-編輯課表
+Route::get('/Semesterexitclass',[TestController::class ,'semesterexitclass']);
+
+
+// 新增book的資料
+// Route::get('/add-book',[TestController::class ,'store'])->middleware(['auth', 'verified']);
+
+
+
+// 以下為0316新增
+
+// 教師列表
+Route::get('/Teacherlist',[TeacherController::class ,'teacherlist']);
+
+// 新增教師
+Route::get('/Addteacher',[TeacherController::class ,'addt']);
+Route::post('/Addteacher',[TeacherController::class ,'addteacher']);
+
+// 編輯教師
+Route::get('/Editteacher',[TeacherController::class ,'editteacher']);
+
+
+
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
